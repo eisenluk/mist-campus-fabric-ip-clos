@@ -1,4 +1,4 @@
-# EVPN IP CLOS Fabric Builder
+# Juniper Mist - EVPN IP CLOS Fabric Builder
 
 **Version:** 0.1  
 **Author:** Lukas Eisenberger (leisenberger@juniper.net)
