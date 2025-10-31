@@ -74,12 +74,10 @@ cd mist-campus-fabric-ip-clos
 
 ## Usage
 
-(Add usage instructions here, for example:)
-
-0. Change values in excel spread sheet
-1. Create an API token on your Mist Org
-2. Copy API token and ORG-ID to the script mist-campus-fabric-ip-clos.py
-3. Run the mist-campus-fabric-ip-clos.py
+1. Change values in excel spread sheet
+2. Create an API token on your Mist Org
+3. Copy API token and ORG-ID to the script mist-campus-fabric-ip-clos.py
+4. Run the mist-campus-fabric-ip-clos.py
 
 ## Contributing
 
