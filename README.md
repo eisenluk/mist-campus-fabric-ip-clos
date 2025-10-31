@@ -63,10 +63,10 @@ EVPN IP CLOS Fabric Builder is a tool designed to automate the configuration and
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/evpn-fabric-builder.git
+git clone https://github.com/eisenluk/mist-campus-fabric-ip-clos.git
 
 # Navigate to the directory
-cd evpn-fabric-builder
+cd mist-campus-fabric-ip-clos
 
 # Install dependencies (if applicable)
 # pip install -r requirements.txt
@@ -78,8 +78,8 @@ cd evpn-fabric-builder
 
 0. Change values in excel spread sheet
 1. Create an API token on your Mist Org
-2. Copy API token and ORG-ID to the script
-3. Run the script.
+2. Copy API token and ORG-ID to the script mist-campus-fabric-ip-clos.py
+3. Run the mist-campus-fabric-ip-clos.py
 
 ## Contributing
 
