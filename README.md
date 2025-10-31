@@ -38,7 +38,6 @@ EVPN IP CLOS Fabric Builder is a tool designed to automate the configuration and
 - **DHCP Relay Support**
   - IPv4 DHCP relay configuration
   - IPv6 DHCP relay configuration
-  - Centralized DHCP server support across the fabric
 
 ### WAN Integration (WAN sheet)
 - **L3 Routing on Border/Core Switches**
