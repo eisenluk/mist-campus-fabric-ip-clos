@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-EVPN IP CLOS Fabric Builder - Version 0.1
+EVPN IP CLOS Fabric Builder - Version 0.2
 === USE AT YOUR OWN RISK! ===
 Features:
 - Reads Excel (FABRIC, SWITCHES, NETWORKS, WAN)
 - Pod-aware with multi-pod support
+-- Flexible pod topologies: 3-tier (Access->Distribution->Core) or 2-tier (Access->Core)
+-- Each pod can independently use either topology in multi-pod deployments
 - Optic port configuration (speed and channelization)
 - IPv4 or IPv6 underlay
 - Dual-Stack in the Overlay
@@ -32,7 +34,7 @@ import mistHelpers
 # =============================================================================
 # CONFIG
 # =============================================================================
-MIST_ORGID = "MIST-ORG-ID"
+MIST_ORGID = "ORG_ID"
 MIST_TOKEN = "API-TOKEN"
 MIST_API_URL = "https://api.eu.mist.com"
 spreadsheetname = "evpn_ip_clos.xlsx"
@@ -1473,7 +1475,12 @@ def _validate_topology_consistency(switches_config: List[Dict[str, Any]], core_a
 
 
 def _validate_pod_structure(switches_config: List[Dict[str, Any]]):
-    """Validate that each pod has at least one distribution and one access switch"""
+    """
+    Validate pod structure and detect topology type.
+    Pods can be either:
+    - 3-tier: Access -> Distribution -> Core
+    - 2-tier: Access -> Core (no distribution layer)
+    """
     # Group switches by pod
     pods: Dict[int, Dict[str, List[str]]] = {}
 
@@ -1494,24 +1501,26 @@ def _validate_pod_structure(switches_config: List[Dict[str, Any]]):
                     f"is assigned to pod {pod_num}. Core and border switches should not be assigned to pods."
                 )
 
-    # Validate each pod has required switches
+    # Validate each pod has required switches and detect topology
     for pod_num, roles in pods.items():
-        if not roles["distribution"]:
-            raise Exception(
-                f"Pod validation error: Pod {pod_num} has no distribution switches. "
-                f"Each pod must have at least one distribution switch."
-            )
-
+        # Each pod must have at least one access switch
         if not roles["access"]:
             raise Exception(
                 f"Pod validation error: Pod {pod_num} has no access switches. "
                 f"Each pod must have at least one access switch."
             )
 
-        # Optional: Log pod structure for verification
-        print(f"Pod {pod_num} structure validated:")
-        print(f"  - Distribution switches: {', '.join(roles['distribution'])}")
-        print(f"  - Access switches: {', '.join(roles['access'])}")
+        # Detect and log topology type
+        if roles["distribution"]:
+            # 3-tier topology: Access -> Distribution -> Core
+            print(f"Pod {pod_num} structure validated (3-tier topology):")
+            print(f"  - Distribution switches: {', '.join(roles['distribution'])}")
+            print(f"  - Access switches: {', '.join(roles['access'])}")
+        else:
+            # 2-tier topology: Access -> Core (no distribution layer)
+            print(f"Pod {pod_num} structure validated (2-tier topology):")
+            print(f"  - Access switches: {', '.join(roles['access'])}")
+            print(f"  - Note: No distribution switches - access switches connect directly to core")
 
 
 def _find_existing_topology(mist: mistClient.Mist, site_id: str, topology_name: str) -> Optional[Dict[str, Any]]:
